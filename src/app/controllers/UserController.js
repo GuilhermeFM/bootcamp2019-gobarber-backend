@@ -16,6 +16,10 @@ class UserController {
 
     return res.json(user);
   }
+
+  async update(req, res) {
+    return res.json({ ok: true, tokenDecoded: req.tokenDecoded });
+  }
 }
 
 export default new UserController();
