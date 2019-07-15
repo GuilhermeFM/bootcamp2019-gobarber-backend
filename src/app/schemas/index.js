@@ -46,3 +46,8 @@ export const userUpdateSchema = yup.object().shape({
   password: yup.string().min(6),
   confirmPassword: yup.string().min(6),
 });
+
+export const appointmentStoreSchema = yup.object().shape({
+  provider_id: yup.number().required(),
+  date: yup.date().required(),
+});

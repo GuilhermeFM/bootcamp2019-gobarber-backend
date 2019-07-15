@@ -14,13 +14,18 @@ const routers = new Router();
 const upload = multer(multerConfig);
 
 routers.post('/users', UserController.store);
+
 routers.post('/session', SessionController.store);
 
 routers.use(authMiddlerware);
 
 routers.put('/users', UserController.update);
-routers.get('/providers', ProviderController.store);
+
+routers.get('/providers', ProviderController.index);
+
 routers.post('/files', upload.single('file'), FileController.store);
+
+routers.get('/appointments', AppointmentController.index);
 routers.post('/appointments', AppointmentController.store);
 
 export default routers;
