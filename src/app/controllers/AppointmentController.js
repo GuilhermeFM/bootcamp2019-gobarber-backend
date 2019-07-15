@@ -45,6 +45,13 @@ class AppointmentController {
     }
 
     const { provider_id, date } = req.body;
+    if (provider_id === req.user.id) {
+      return res.status(400).json({
+        status: 'not ok',
+        message: "Providers can't create appointments do it self.",
+      });
+    }
+
     const isProvider = await User.findOne({
       where: { id: provider_id, provider: true },
     });
@@ -80,9 +87,9 @@ class AppointmentController {
     }
 
     const appointment = await Appointment.create({
-      user_id: req.user.id,
       provider_id,
-      date,
+      user_id: req.user.id,
+      date: hourStart,
     });
 
     const formattedDate = format(
