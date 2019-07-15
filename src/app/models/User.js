@@ -27,8 +27,7 @@ class User extends Model {
       }
     });
 
-    // We return this here but for now it's not being used
-    // anywhere (for now)
+    // We return this here to be used with map function.
     return this;
   }
 
