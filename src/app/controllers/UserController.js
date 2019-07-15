@@ -1,73 +1,68 @@
-import * as Yup from 'yup';
 import User from '../models/User';
+import { userStoreSchema, userUpdateSchema } from '../schemas';
 
 class UserController {
   async store(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string().required(),
-      email: Yup.string()
-        .email()
-        .required(),
-      password: Yup.string()
-        .required()
-        .min(6),
-      confirmPassword: Yup.string().when('password', (password, field) =>
-        password ? field.required().oneOf([Yup.ref('password')]) : field
-      ),
-    });
+    try {
+      await userStoreSchema.validate(req.body);
+    } catch (err) {
+      return res.status(401).json({ status: 'not ok', message: err.message });
+    }
 
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.' });
+    const { password, confirmPassword } = req.body;
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json({ status: 'not ok', message: 'password did not match.' });
     }
 
     const userExists = await User.findOne({ where: { email: req.body.email } });
-
     if (userExists) {
-      return res.status(400).json({ erro: 'User already exists' });
+      return res
+        .status(400)
+        .json({ status: 'not ok', message: 'User already exists.' });
     }
 
-    const user = await User.create(req.body);
-
-    return res.json(user);
+    const { id, name, email, provider } = await User.create(req.body);
+    return res.json({ status: 'ok', user: { id, name, email, provider } });
   }
 
   async update(req, res) {
-    const schema = Yup.object().shape({
-      name: Yup.string(),
-      email: Yup.string().email(),
-      oldPassword: Yup.string().min(6),
-      password: Yup.string()
-        .min(6)
-        .when('oldPassword', (oldPassword, field) =>
-          oldPassword ? field.required() : field
-        ),
-      confirmPassword: Yup.string().when('password', (password, field) =>
-        password ? field.required().oneOf([Yup.ref('password')]) : field
-      ),
-    });
-
-    if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ error: 'Validation fails.' });
+    try {
+      await userUpdateSchema.validate(req.body);
+    } catch (err) {
+      return res.status(401).json({ status: 'not ok', message: err.message });
     }
 
-    const { email, oldPassword } = req.body;
+    const { user } = req;
+    const { email: novoEmail } = req.body;
+    const { oldPassword, password, confirmPassword } = req.body;
 
-    const user = await User.findByPk(req.tokenDecoded.id);
-
-    if (email !== user.email) {
-      const userExists = await User.findOne({ where: { email } });
-
+    if (novoEmail && novoEmail !== user.email) {
+      const userExists = await User.findOne({ where: { novoEmail } });
       if (userExists) {
-        return res.status(400).json({ erro: 'User already exists' });
+        return res.status(400).json({
+          status: 'not ok',
+          message: 'This email is associated with other user.',
+        });
       }
     }
 
-    if (oldPassword && !(await user.checkPassword(oldPassword))) {
-      return res.status(401).json({ erro: 'Password does not match.' });
+    if (password) {
+      if (!oldPassword || !(await user.checkPassword(oldPassword))) {
+        return res
+          .status(401)
+          .json({ status: 'not ok', message: 'Old Password did not match.' });
+      }
+
+      if (password !== confirmPassword) {
+        return res
+          .status(401)
+          .json({ status: 'not ok', message: 'Password did not match.' });
+      }
     }
 
-    const { id, name, provider } = await user.update(req.body);
-
+    const { id, name, email, provider } = await user.update(req.body);
     return res.json({ id, name, email, provider });
   }
 }
