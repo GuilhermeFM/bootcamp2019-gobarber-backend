@@ -1,5 +1,5 @@
 import User from '../models/User';
-import { userStoreSchema, userUpdateSchema } from '../schemas';
+import { userStoreSchema, userUpdateSchema } from '../schemas/yup';
 
 class UserController {
   async store(req, res) {
