@@ -1,4 +1,6 @@
 import User from '../models/User';
+import File from '../models/File';
+
 import { userStoreSchema, userUpdateSchema } from '../schemas/yup';
 
 class UserController {
@@ -62,8 +64,19 @@ class UserController {
       }
     }
 
-    const { id, name, email, provider } = await user.update(req.body);
-    return res.json({ id, name, email, provider });
+    await user.update(req.body);
+
+    const { id, name, email, avatar } = await User.findByPk(req.user.id, {
+      include: [
+        {
+          model: File,
+          as: 'avatar',
+          attributes: ['id', 'path', 'url'],
+        },
+      ],
+    });
+
+    return res.json({ id, name, email, avatar });
   }
 }
 
