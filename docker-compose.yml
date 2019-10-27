@@ -40,7 +40,7 @@ services:
     image: redis:alpine
     container_name: GoBarberRedis
     volumes:
-      - gobarber-redis-data:/data
+      - gobarber:/data/redis
     networks:
       - gobarber-network
 
@@ -51,7 +51,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - gobarber-postgres-data:/data
+      - gobarber:/data/postgres
     networks:
       - gobarber-network
 
@@ -59,14 +59,12 @@ services:
     image: mongo
     container_name: GoBarberMongo
     volumes:
-      - gobarber-mongo-data:/data
+      - gobarber:/data/mongo
     networks:
       - gobarber-network
 
 volumes:
-  gobarber-redis-data:
-  gobarber-mongo-data:
-  gobarber-postgres-data:
+  gobarber:
 
 networks:
   gobarber-network:
