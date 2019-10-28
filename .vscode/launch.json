@@ -5,7 +5,19 @@
       "type": "node",
       "request": "attach",
       "name": "Node Inspector",
-      "protocol": "inspector"
+      "protocol": "inspector",
+
+      // porta mapeada da vm
+      "port": 9229,
+
+      // vm-address
+      "address": "192.168.99.100",
+
+      // local dos sources no host
+      "localRoot": "${workspaceFolder}",
+
+      // local dos sources no container
+      "remoteRoot": "/home/node/api"
     }
   ]
 }

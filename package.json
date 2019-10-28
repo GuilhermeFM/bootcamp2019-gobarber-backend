@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "queue": "nodemon src/queue.js",
-    "dev": "nodemon src/server.js",
-    "debug": "node --inspect -r sucrase/register src/server.js"
+    "queue": "nodemon --legacy-watch src/queue.js",
+    "dev": "nodemon --legacy-watch src/server.js",
+    "debug": "node --inspect=0.0.0.0 -r sucrase/register src/server.js"
   },
   "dependencies": {
     "@sentry/node": "5.5.0",
