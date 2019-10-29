@@ -16,11 +16,13 @@ services:
       - gobarber-postgres
       - gobarber-mongo
       - gobarber-migrate
-    command: yarn debug
+    command: yarn dev
 
   gobarber-queue:
     build: .
     container_name: GoBarberQueue
+    volumes:
+      - /d/Guilherme/Documents/GitHub/bootcamp2019-gobarber-backend:/home/node/api
     networks:
       - gobarber-network
     depends_on:
@@ -33,6 +35,8 @@ services:
   gobarber-migrate:
     build: .
     container_name: GoBarberMigrate
+    volumes:
+      - /d/Guilherme/Documents/GitHub/bootcamp2019-gobarber-backend:/home/node/api
     networks:
       - gobarber-network
     depends_on:
@@ -43,7 +47,7 @@ services:
     image: redis:alpine
     container_name: GoBarberRedis
     volumes:
-      - gobarber:/data/redis
+      - redis:/data
     networks:
       - gobarber-network
 
@@ -54,7 +58,7 @@ services:
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
     volumes:
-      - gobarber:/data/postgres
+      - postgresql:/var/lib/postgresql/data
     networks:
       - gobarber-network
 
@@ -62,12 +66,15 @@ services:
     image: mongo
     container_name: GoBarberMongo
     volumes:
-      - gobarber:/data/mongo
+      - mongo:/data/db
+      - mongo:/data/configdb
     networks:
       - gobarber-network
 
 volumes:
-  gobarber:
+  postgresql:
+  redis:
+  mongo:
 
 networks:
   gobarber-network:
