@@ -9,7 +9,7 @@
     "debug": "node --inspect=0.0.0.0 -r sucrase/register src/server.js"
   },
   "dependencies": {
-    "@sentry/node": "5.5.0",
+    "@sentry/node": "5.7.1",
     "bcryptjs": "^2.4.3",
     "bee-queue": "^1.2.2",
     "cors": "^2.8.5",
@@ -30,8 +30,8 @@
     "yup": "^0.27.0"
   },
   "devDependencies": {
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-plugin-import": "^2.18.0",
     "eslint-plugin-prettier": "^3.1.0",
