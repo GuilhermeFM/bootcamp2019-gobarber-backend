@@ -41,7 +41,7 @@ class UserController {
     const { oldPassword, password, confirmPassword } = req.body;
 
     if (novoEmail && novoEmail !== user.email) {
-      const userExists = await User.findOne({ where: { novoEmail } });
+      const userExists = await User.findOne({ where: { email: novoEmail } });
       if (userExists) {
         return res.status(400).json({
           status: 'not ok',
