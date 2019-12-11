@@ -6,7 +6,9 @@
   "scripts": {
     "queue": "nodemon --legacy-watch src/queue.js",
     "dev": "nodemon --legacy-watch src/server.js",
-    "debug": "node --inspect=0.0.0.0 -r sucrase/register src/server.js"
+    "debug": "node --inspect=0.0.0.0 -r sucrase/register src/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports",
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@sentry/node": "5.7.1",
