@@ -6,7 +6,6 @@ services:
     container_name: GoBarberAPI
     ports:
       - '3333:3333'
-      - '9229:9229'
     networks:
       - gobarber-network
     depends_on:
@@ -14,19 +13,7 @@ services:
       - gobarber-postgres
       - gobarber-mongo
       - gobarber-migrate
-    command: yarn dev
-
-  gobarber-queue:
-    build: .
-    container_name: GoBarberQueue
-    networks:
-      - gobarber-network
-    depends_on:
-      - gobarber-redis
-      - gobarber-postgres
-      - gobarber-mongo
-      - gobarber-migrate
-    command: yarn queue
+    command: pm2-runtime start gobarber.ecosystem.config.js
 
   gobarber-migrate:
     build: .

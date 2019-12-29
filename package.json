@@ -4,11 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "queue": "nodemon --legacy-watch src/queue.js",
-    "dev": "nodemon --legacy-watch src/server.js",
-    "debug": "node --inspect=0.0.0.0 -r sucrase/register src/server.js",
-    "build": "sucrase ./src -d ./dist --transforms imports",
-    "start": "node dist/server.js"
+    "start-queue": "nodemon --legacy-watch src/queue.js",
+    "start-app": "nodemon --legacy-watch src/server.js",
+    "debug-queue": "node --inspect=0.0.0.0 -r sucrase/register src/queue.js",
+    "debug-app": "node --inspect=0.0.0.0 -r sucrase/register src/server.js",
+    "build": "sucrase ./src -d ./dist --transforms imports"
   },
   "dependencies": {
     "@sentry/node": "5.7.1",
